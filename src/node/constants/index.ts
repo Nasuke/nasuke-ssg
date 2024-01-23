@@ -4,3 +4,11 @@ import { join } from "path";
 export const PACKAGE_ROOT = join(__dirname, "..", "..", "..");
 // 模版
 export const DEFAULT_HTML_PATH = join(PACKAGE_ROOT, "template.html");
+// 入口路径
+export const CLIENT_ENTRY_PATH = join(
+  PACKAGE_ROOT,
+  "src",
+  "runtime",
+  "client-entry.tsx"
+);
+

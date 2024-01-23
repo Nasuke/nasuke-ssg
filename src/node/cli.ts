@@ -11,7 +11,9 @@ cli
   .command("[root]", "start dev server")
   .alias("dev")
   .action(async (root: string) => {
+    // 命令对应根目录 没有则使用项目根目录
     root = root ? path.resolve(root) : process.cwd()
+    
     const server = await createDevServer(root)
     // 监听
     await server.listen()
