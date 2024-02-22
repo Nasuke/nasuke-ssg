@@ -9,7 +9,7 @@ function pluginIndexHtml() {
         name: "index-html",
         // 只用于开发环境
         apply: "serve",
-        // 该钩子用于控制html内容
+        // 该钩子用于控制html内容 - 请求响应阶段执行
         transformIndexHtml(html) {
             return {
                 html,
@@ -26,7 +26,7 @@ function pluginIndexHtml() {
                 ]
             };
         },
-        // 该钩子用于拓展中间件
+        // 该钩子获取DevServer实例 用于拓展中间件 - 服务启动阶段执行
         configureServer(server) {
             // 在vite内置中间件之后执行
             return () => {
