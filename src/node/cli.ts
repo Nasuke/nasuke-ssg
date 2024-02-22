@@ -1,6 +1,7 @@
 import { cac } from 'cac'
 import { createDevServer } from './dev'
 import path = require('path');
+import { build } from './build';
 
 // 版本号 
 const version = require("../../package.json").version
@@ -23,7 +24,13 @@ cli
 cli
   .command("build [root]", "build for production")
   .action(async (root: string) => {
-    console.log("build", root);
+    try {
+      root = path.resolve(root)
+      await build(root)
+    } catch (error) {
+      console.log(error);
+      
+    }
   });
 // 解析参数
 cli.parse();
