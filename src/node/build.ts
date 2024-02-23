@@ -1,32 +1,30 @@
-import { InlineConfig, build as ViteBuild } from 'vite'
+import { InlineConfig, build as ViteBuild } from 'vite';
 import pluginReact from '@vitejs/plugin-react';
-import type { RollupOutput } from "rollup";
+import type { RollupOutput } from 'rollup';
 import { CLIENT_ENTRY_PATH, SERVER_ENTRY_PATH } from './constants';
 import { join } from 'path';
-import fs from "fs-extra";
+import fs from 'fs-extra';
 
-import { pathToFileURL } from 'url'
+import { pathToFileURL } from 'url';
 
-
-
-export async function bundle (root: string) {
+export async function bundle(root: string) {
   // 抽离公共配置
-  const resolveViteConfig = (isServer: Boolean): InlineConfig => ({
+  const resolveViteConfig = (isServer: boolean): InlineConfig => ({
     mode: 'production',
     root,
     // 自动注入react插件
     plugins: [pluginReact()],
     build: {
       ssr: isServer as boolean | string,
-      outDir: isServer ? ".temp" : "build",
+      outDir: isServer ? '.temp' : 'build',
       rollupOptions: {
         input: isServer ? SERVER_ENTRY_PATH : CLIENT_ENTRY_PATH,
         output: {
-          format: isServer ? "cjs" : "esm"
+          format: isServer ? 'cjs' : 'esm'
         }
       }
     }
-  })
+  });
 
   // 并发打包
   try {
@@ -35,30 +33,33 @@ export async function bundle (root: string) {
       ViteBuild(resolveViteConfig(false)),
       // server
       ViteBuild(resolveViteConfig(true))
-    ])
-    return [clientBundle, serverBundle] as [RollupOutput, RollupOutput]
+    ]);
+    return [clientBundle, serverBundle] as [RollupOutput, RollupOutput];
   } catch (error) {
     console.log(error);
   }
 }
 
-console.log(`Building client + server bundles...`);
+console.log('Building client + server bundles...');
 
 export async function build(root: string = process.cwd()) {
-  const [clientBundle, serverBundle] = await bundle(root);
+  const [clientBundle] = await bundle(root);
   // 引入 ssr 入口模块
-  const serverBundleEntryPath = join(root, ".temp", "server-entry.js");
+  const serverBundleEntryPath = join(root, '.temp', 'server-entry.js');
   // 兼容windows处理 需要使用pathToFileURL
-  const { render } = await import(pathToFileURL(serverBundleEntryPath).toString()); 
+  const { render } = await import(
+    pathToFileURL(serverBundleEntryPath).toString()
+  );
 
   // 渲染出html 写入
-  await renderPage(render, root, clientBundle)
+  await renderPage(render, root, clientBundle);
 }
-
 
 export async function renderPage(render, root, clientBundle) {
   // clientChunk for hydration
-  const clientChunk = clientBundle.output.find(chunk => chunk.type === 'chunk' && chunk.isEntry)
+  const clientChunk = clientBundle.output.find(
+    (chunk) => chunk.type === 'chunk' && chunk.isEntry
+  );
   console.log('Rendering page in server side');
   // compoent html
   const appHtml = render();
@@ -77,8 +78,8 @@ export async function renderPage(render, root, clientBundle) {
   </body>
 </html>`.trim();
 
-  await fs.ensureDir(join(root, "build"))
-  await fs.writeFile(join(root, "build/index.html"), html)
+  await fs.ensureDir(join(root, 'build'));
+  await fs.writeFile(join(root, 'build/index.html'), html);
   // remove server bundle
-  await fs.remove(join(root, ".temp"))
+  await fs.remove(join(root, '.temp'));
 }
