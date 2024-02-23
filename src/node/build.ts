@@ -3,8 +3,9 @@ import pluginReact from '@vitejs/plugin-react';
 import type { RollupOutput } from "rollup";
 import { CLIENT_ENTRY_PATH, SERVER_ENTRY_PATH } from './constants';
 import { join } from 'path';
-import * as fs from "fs-extra";
+import fs from "fs-extra";
 
+import { pathToFileURL } from 'url'
 
 
 
@@ -47,7 +48,8 @@ export async function build(root: string = process.cwd()) {
   const [clientBundle, serverBundle] = await bundle(root);
   // 引入 ssr 入口模块
   const serverBundleEntryPath = join(root, ".temp", "server-entry.js");
-  const { render } = require(serverBundleEntryPath);
+  // 兼容windows处理 需要使用pathToFileURL
+  const { render } = await import(pathToFileURL(serverBundleEntryPath).toString()); 
 
   // 渲染出html 写入
   await renderPage(render, root, clientBundle)
