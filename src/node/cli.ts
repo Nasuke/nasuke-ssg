@@ -2,6 +2,7 @@ import { cac } from 'cac';
 import { resolve } from 'path';
 
 import { build } from './build';
+import { resolveConfig } from './config';
 
 // 版本号
 const cli = cac('island').version('0.0.1').help();
@@ -10,7 +11,6 @@ cli
   .command('[root]', 'start dev server')
   .alias('dev')
   .action(async (root: string) => {
-
     const createServer = async () => {
       // dev.ts已经单独打包 顾获取其js产物
       const { createDevServer } = await import('./dev.js')
@@ -32,7 +32,10 @@ cli
   .action(async (root: string) => {
     try {
       root = resolve(root);
-      await build(root);
+      console.log(root, 'xxx');
+      
+      const config = await resolveConfig(root, 'build', 'production')
+      await build(root, config);
     } catch (error) {
       console.log(error);
     }

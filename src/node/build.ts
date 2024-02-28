@@ -5,18 +5,25 @@ import { CLIENT_ENTRY_PATH, SERVER_ENTRY_PATH } from './constants';
 import { join } from 'path';
 import fs from 'fs-extra';
 
-import { pathToFileURL } from 'url';
 
-export async function bundle(root: string) {
+
+import { pathToFileURL } from 'url';
+import { SiteConfig } from 'shared/types';
+import { PluginConfig } from './plugin-nasuke/config';
+
+export async function bundle(root: string, config: SiteConfig) {
   // 抽离公共配置
   const resolveViteConfig = (isServer: boolean): InlineConfig => ({
     mode: 'production',
     root,
+    ssr: {
+      noExternal: ['react-router-dom']
+    },
     // 自动注入react插件
-    plugins: [pluginReact()],
+    plugins: [pluginReact(), PluginConfig(config)],
     build: {
-      ssr: isServer as boolean | string,
-      outDir: isServer ? '.temp' : 'build',
+      ssr: isServer,
+      outDir: isServer ? join(root, '.temp') : join(root, 'build'),
       rollupOptions: {
         input: isServer ? SERVER_ENTRY_PATH : CLIENT_ENTRY_PATH,
         output: {
@@ -42,8 +49,8 @@ export async function bundle(root: string) {
 
 console.log('Building client + server bundles...');
 
-export async function build(root: string = process.cwd()) {
-  const [clientBundle] = await bundle(root);
+export async function build(root: string = process.cwd(), config: SiteConfig) {
+  const [clientBundle] = await bundle(root, config);
   // 引入 ssr 入口模块
   const serverBundleEntryPath = join(root, '.temp', 'server-entry.js');
   // 兼容windows处理 需要使用pathToFileURL

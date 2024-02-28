@@ -1,13 +1,14 @@
-import { relative } from 'path';
+import { join, relative } from 'path';
 import { SiteConfig } from '../../shared/types/index';
-import { Plugin } from 'vite';
+import { Plugin, normalizePath } from 'vite';
+import { PACKAGE_ROOT } from 'node/constants';
 
 const SITE_DATA_ID = "nasuke:site-data"
 
 
 export function PluginConfig(
   config: SiteConfig,
-  restart: () => Promise<void>
+  restart?: () => Promise<void>
 ): Plugin{
   return {
     name: 'nasuke: config',
@@ -21,9 +22,20 @@ export function PluginConfig(
         return `export default ${JSON.stringify(config.siteData)}`
       }
     },
+    config(){
+      return {
+        root: PACKAGE_ROOT,
+        resolve: {
+          alias: {
+            '@runtime': join(PACKAGE_ROOT, 'src', 'runtime', 'index.ts')
+          }
+        }
+      }
+    },
     async handleHotUpdate(ctx) {
       // 配置文件路径
-      const customFilesPath = [config.configPath]
+      
+      const customFilesPath = [normalizePath(config.configPath)]
       // 匹配
       const include = (id: string) => customFilesPath.some(file => id.includes(file))
       // ctx.file代表需要热更的文件
