@@ -6,7 +6,9 @@ import { resolveConfig } from './config';
 import pluginReact from '@vitejs/plugin-react';
 import { PluginConfig } from './plugin-nasuke/config';
 
-export async function createDevServer(root = process.cwd()) {
+export async function createDevServer(
+  root = process.cwd(), 
+  restart: () => Promise<void>) {
 
   // 获取配置文件
   const config = await resolveConfig(root, 'serve', 'development')
@@ -14,7 +16,7 @@ export async function createDevServer(root = process.cwd()) {
   
   return createViteServer({
     root,
-    plugins: [pluginIndexHtml(), pluginReact(), PluginConfig(config)],
+    plugins: [pluginIndexHtml(), pluginReact(), PluginConfig(config, restart)],
     server: {
       fs: {
         allow: [PACKAGE_ROOT] // 根目录下文件都是合法路径

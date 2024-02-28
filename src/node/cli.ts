@@ -1,5 +1,4 @@
 import { cac } from 'cac';
-import { createDevServer } from './dev';
 import { resolve } from 'path';
 
 import { build } from './build';
@@ -11,13 +10,21 @@ cli
   .command('[root]', 'start dev server')
   .alias('dev')
   .action(async (root: string) => {
-    // 命令对应根目录 没有则使用项目根目录
-    root = root ? resolve(root) : process.cwd();
 
-    const server = await createDevServer(root);
-    // 监听
-    await server.listen();
-    server.printUrls();
+    const createServer = async () => {
+      // dev.ts已经单独打包 顾获取其js产物
+      const { createDevServer } = await import('./dev.js')
+      const server = await createDevServer(root, async () => {
+        // 重启回调 先关闭再启动
+        await server.close()
+        await createServer()
+      })
+      // 监听
+      await server.listen();
+      server.printUrls();
+    }
+
+    await createServer()
   });
 
 cli
