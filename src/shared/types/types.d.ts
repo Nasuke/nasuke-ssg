@@ -3,3 +3,9 @@ declare module 'nasuke:site-data' {
   const siteData: UserConfig
   export default siteData
 }
+
+declare module 'nasuke:routes' {
+  import { RouteObject } from 'react-router-dom';
+  const routes: RouteObject[];
+  export { routes };
+}
