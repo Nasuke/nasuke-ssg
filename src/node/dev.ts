@@ -13,7 +13,7 @@ export async function createDevServer(
   
   return createViteServer({
     root: PACKAGE_ROOT, // 直接接受用户的docs目录 会先被vite接管 直接返回文件内容了 与约定式路由冲突
-    plugins: createVitePlugins(config, restart),
+    plugins: await createVitePlugins(config, restart),
     server: {
       fs: {
         allow: [PACKAGE_ROOT] // 根目录下文件都是合法路径

@@ -12,14 +12,14 @@ import { createVitePlugins } from './vitePlugin';
 
 export async function bundle(root: string, config: SiteConfig) {
   // 抽离公共配置
-  const resolveViteConfig = (isServer: boolean): InlineConfig => ({
+  const resolveViteConfig = async (isServer: boolean): InlineConfig => ({
     mode: 'production',
     root,
     ssr: {
       noExternal: ['react-router-dom']
     },
     // 创建插件
-    plugins: createVitePlugins(config),
+    plugins: await createVitePlugins(config),
     build: {
       ssr: isServer,
       outDir: isServer ? join(root, '.temp') : join(root, 'build'),
@@ -36,9 +36,9 @@ export async function bundle(root: string, config: SiteConfig) {
   try {
     const [clientBundle, serverBundle] = await Promise.all([
       // client
-      ViteBuild(resolveViteConfig(false)),
+      ViteBuild(await resolveViteConfig(false)),
       // server
-      ViteBuild(resolveViteConfig(true))
+      ViteBuild(await resolveViteConfig(true))
     ]);
     return [clientBundle, serverBundle] as [RollupOutput, RollupOutput];
   } catch (error) {
