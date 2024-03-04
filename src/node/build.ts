@@ -1,5 +1,4 @@
 import { InlineConfig, build as ViteBuild } from 'vite';
-import pluginReact from '@vitejs/plugin-react';
 import type { RollupOutput } from 'rollup';
 import { CLIENT_ENTRY_PATH, SERVER_ENTRY_PATH } from './constants';
 import { join } from 'path';
@@ -9,7 +8,7 @@ import fs from 'fs-extra';
 
 import { pathToFileURL } from 'url';
 import { SiteConfig } from 'shared/types';
-import { PluginConfig } from './plugin-nasuke/config';
+import { createVitePlugins } from './vitePlugin';
 
 export async function bundle(root: string, config: SiteConfig) {
   // 抽离公共配置
@@ -19,8 +18,8 @@ export async function bundle(root: string, config: SiteConfig) {
     ssr: {
       noExternal: ['react-router-dom']
     },
-    // 自动注入react插件
-    plugins: [pluginReact(), PluginConfig(config)],
+    // 创建插件
+    plugins: createVitePlugins(config),
     build: {
       ssr: isServer,
       outDir: isServer ? join(root, '.temp') : join(root, 'build'),

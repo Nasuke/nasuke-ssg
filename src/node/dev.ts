@@ -1,11 +1,7 @@
 import { createServer as createViteServer } from 'vite';
-import { pluginIndexHtml } from './plugin-nasuke/indexHtml';
 import { PACKAGE_ROOT } from './constants';
 import { resolveConfig } from './config';
-
-import pluginReact from '@vitejs/plugin-react';
-import { PluginConfig } from './plugin-nasuke/config';
-import { pluginRoutes } from './plugin-routes';
+import { createVitePlugins } from './vitePlugin';
 
 export async function createDevServer(
   root = process.cwd(), 
@@ -17,7 +13,7 @@ export async function createDevServer(
   
   return createViteServer({
     root: PACKAGE_ROOT, // 直接接受用户的docs目录 会先被vite接管 直接返回文件内容了 与约定式路由冲突
-    plugins: [pluginIndexHtml(), pluginReact(), PluginConfig(config, restart), pluginRoutes({root: config.root})],
+    plugins: createVitePlugins(config, restart),
     server: {
       fs: {
         allow: [PACKAGE_ROOT] // 根目录下文件都是合法路径
