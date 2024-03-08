@@ -8,7 +8,6 @@ export const rehypePluginPreWrapper: Plugin<[], Root> = () => {
     visit(tree, 'element', (node) => {
       // current <pre><code class="lanuage-js">...</code></pre>
       // 找到pre - 解析出代码块语言名称 - 重新构造Html AST
-
       if(
         node.tagName === 'pre' &&
         node.children[0]?.type === 'element' &&

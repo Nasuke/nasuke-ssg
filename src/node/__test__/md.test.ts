@@ -2,7 +2,10 @@ import { unified } from 'unified';
 import { describe, test, expect } from 'vitest';
 import remarkParse from 'remark-parse';
 import remarkRehype from 'remark-rehype';
+import remarkMdx from 'remark-mdx'
+import { remarkPluginToc } from '../plugin-mdx/remarkPlugins/toc'
 import rehypeStringify from 'rehype-stringify';
+import remarkStringfy from 'remark-stringify'
 import { rehypePluginPreWrapper } from '../plugin-mdx/rehypePlugins/preWrapper';
 import { rehypePluginShiki } from '../plugin-mdx/rehypePlugins/shiki';
 import shiki from 'shiki';
@@ -19,6 +22,12 @@ describe('Markdown compile cases', async () => {
         theme: 'nord'
       })
     })
+
+  const remarkProcessor = unified()
+  .use(remarkParse)
+  .use(remarkMdx)
+  .use(remarkPluginToc)
+  .use(remarkStringfy)
 
 
   test('Compile title', async () => {
@@ -50,4 +59,41 @@ describe('Markdown compile cases', async () => {
       <span class=\\"line\\"></span></code></pre></div>"
     `);
   });
+
+  test('Compile Toc', async () => {
+    const mdContent = `# h1
+
+## h2 \`code\`
+
+### h3 [link](https://islandjs.dev)
+
+#### h4
+
+##### h5
+`;
+    const result = remarkProcessor.processSync(mdContent)
+    const replaceRes = result.value.toString().replace(mdContent, '')
+    expect(replaceRes).toMatchInlineSnapshot(`
+      "
+      export const toc = [
+        {
+          \\"id\\": \\"h2-code\\",
+          \\"text\\": \\"h2 code\\",
+          \\"depth\\": 2
+        },
+        {
+          \\"id\\": \\"h3-link\\",
+          \\"text\\": \\"h3 link\\",
+          \\"depth\\": 3
+        },
+        {
+          \\"id\\": \\"h4\\",
+          \\"text\\": \\"h4\\",
+          \\"depth\\": 4
+        }
+      ];
+      "
+    `);
+  });
+
 });

@@ -12,7 +12,7 @@ import { createVitePlugins } from './vitePlugin';
 
 export async function bundle(root: string, config: SiteConfig) {
   // 抽离公共配置
-  const resolveViteConfig = async (isServer: boolean): InlineConfig => ({
+  const resolveViteConfig = async (isServer: boolean): Promise<InlineConfig> => ({
     mode: 'production',
     root,
     ssr: {
