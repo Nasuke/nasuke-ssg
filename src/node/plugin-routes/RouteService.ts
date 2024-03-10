@@ -55,15 +55,20 @@ export class RouteService {
   }
 
   // 生成模块代码
-  generateRoutesCode() {
+  // ssr - 直接从本地获取产物 dev 不需要 loadable
+  generateRoutesCode(ssr = false) {
     return `
 import React from 'react';
-import loadable from '@loadable/component';
-  ${this._routeData
+${ssr ? '' : 'import loadable from "@loadable/component";'}
+
+${this._routeData
   .map((route, index) => {
-return `const Route${index} = loadable(() => import('${route.absolutePath}'));`;
+    return ssr
+      ? `import Route${index} from "${route.absolutePath}";`
+      : `const Route${index} = loadable(() => import('${route.absolutePath}'));`;
   })
-  .join('\n')}
+.join('\n')}
+  
 export const routes = [
   ${this._routeData
     .map((route, index) => {

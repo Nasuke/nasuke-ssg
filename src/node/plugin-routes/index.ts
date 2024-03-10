@@ -2,7 +2,14 @@ import { Plugin } from 'vite'
 import { RouteService } from './RouteService';
 
 interface PluginOptions {
-  root: string
+  root: string,
+  isSSR: boolean
+}
+
+export interface Route {
+  path: string,
+  element: React.ReactElement,
+  filePath: string
 }
 
 // routes对应虚拟模块id
@@ -25,8 +32,8 @@ export function pluginRoutes(options: PluginOptions): Plugin{
     },
     load(id: string) {
       if(id === '\0' + CONVENTIONAL_ROUTE_ID) {
-        // 返回构造的模块内容(包含组件懒加载)
-        return routeService.generateRoutesCode()
+        // 返回构造的模块内容(包含组件懒加载 ssg阶段则不用)
+        return routeService.generateRoutesCode(options.isSSR || false)
       }
     }
   }
