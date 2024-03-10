@@ -18,3 +18,5 @@ export const SERVER_ENTRY_PATH = join(
   'runtime',
   'server-entry.tsx'
 );
+// 匹配mdx文件
+export const MD_REGEX = /\.mdx?$/;
