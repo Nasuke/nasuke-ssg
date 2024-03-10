@@ -9,3 +9,9 @@ declare module 'nasuke:routes' {
   const routes: RouteObject[];
   export { routes };
 }
+
+
+declare module "*.module.scss" {
+  const classes: { [key: string]: string };
+  export default classes;
+}

@@ -1,0 +1,356 @@
+/**
+ * Colors Base
+ *
+ * These are the pure base color presets. Most of the time, you should not be
+ * using these colors directly in the theme but rather use "Colors Theme"
+ * instead because those are "Theme (light or dark)" dependant.
+ * -------------------------------------------------------------------------- */
+
+ :root {
+  --nasuke-c-white: #ffffff;
+  --nasuke-c-white-soft: #f9f9f9;
+  --nasuke-c-white-mute: #f1f1f1;
+
+  --nasuke-c-black: #1a1a1a;
+  --nasuke-c-black-pure: #000000;
+  --nasuke-c-black-soft: #242424;
+  --nasuke-c-black-mute: #2f2f2f;
+
+  --nasuke-c-gray: #8e8e8e;
+  --nasuke-c-gray-light-1: #aeaeae;
+  --nasuke-c-gray-light-2: #c7c7c7;
+  --nasuke-c-gray-light-3: #d1d1d1;
+  --nasuke-c-gray-light-4: #e5e5e5;
+  --nasuke-c-gray-light-5: #f2f2f2;
+  --nasuke-c-gray-dark-1: #636363;
+  --nasuke-c-gray-dark-2: #484848;
+  --nasuke-c-gray-dark-3: #3a3a3a;
+  --nasuke-c-gray-dark-4: #282828;
+  --nasuke-c-gray-dark-5: #202020;
+
+  --nasuke-c-divider-light-1: rgba(60, 60, 60, 0.29);
+  --nasuke-c-divider-light-2: rgba(60, 60, 60, 0.12);
+  --nasuke-c-divider-dark-1: rgba(84, 84, 84, 0.65);
+  --nasuke-c-divider-dark-2: rgba(84, 84, 84, 0.48);
+
+  --nasuke-c-indigo: #213547;
+  --nasuke-c-indigo-soft: #476582;
+  --nasuke-c-indigo-light: #aac8e4;
+  --nasuke-c-indigo-lighter: #c9def1;
+  --nasuke-c-indigo-dark: #1d2f3f;
+  --nasuke-c-indigo-darker: #14212e;
+
+  --nasuke-c-text-light-1: var(--nasuke-c-indigo);
+  --nasuke-c-text-light-2: rgba(60, 60, 60, 0.7);
+  --nasuke-c-text-light-3: rgba(60, 60, 60, 0.33);
+  --nasuke-c-text-light-4: rgba(60, 60, 60, 0.18);
+
+  --nasuke-c-text-dark-1: rgba(255, 255, 255, 0.87);
+  --nasuke-c-text-dark-2: rgba(235, 235, 235, 0.6);
+  --nasuke-c-text-dark-3: rgba(235, 235, 235, 0.38);
+  --nasuke-c-text-dark-4: rgba(235, 235, 235, 0.18);
+
+  --nasuke-c-green: #21b8a3;
+  --nasuke-c-green-light: #41c6b0;
+  --nasuke-c-green-lighter: #41c6b0;
+  --nasuke-c-green-dark: #149684;
+  --nasuke-c-green-darker: #149684;
+  --nasuke-c-green-dimm: #062521;
+
+  --nasuke-c-green-dimm-1: rgba(66, 184, 131, 0.5);
+  --nasuke-c-green-dimm-2: rgba(66, 184, 131, 0.25);
+  --nasuke-c-green-dimm-3: rgba(66, 184, 131, 0.05);
+
+  --nasuke-c-blue: #646cff;
+  --nasuke-c-blue-light: #747bff;
+  --nasuke-c-blue-lighter: #9499ff;
+  --nasuke-c-blue-lightest: #bcc0ff;
+  --nasuke-c-blue-dark: #535bf2;
+  --nasuke-c-blue-darker: #454ce1;
+  --nasuke-c-blue-dimm: rgba(100, 108, 255, 0.08);
+
+  --nasuke-c-yellow: #ffc517;
+  --nasuke-c-yellow-light: #fcd253;
+  --nasuke-c-yellow-lighter: #fcfc7c;
+  --nasuke-c-yellow-darker: #ad850e;
+  --nasuke-c-yellow-dimm-1: rgba(255, 197, 23, 0.5);
+  --nasuke-c-yellow-dimm-2: rgba(255, 197, 23, 0.25);
+  --nasuke-c-yellow-dimm-3: rgba(255, 197, 23, 0.05);
+
+  --nasuke-c-red: #ed3c50;
+  --nasuke-c-red-light: #f54e82;
+  --nasuke-c-red-lighter: #fd1d7c;
+  --nasuke-c-red-darker: #ab2131;
+  --nasuke-c-red-dimm-1: rgba(237, 60, 80, 0.5);
+  --nasuke-c-red-dimm-2: rgba(237, 60, 80, 0.25);
+  --nasuke-c-red-dimm-3: rgba(237, 60, 80, 0.05);
+}
+
+/**
+ * Colors Theme
+ * -------------------------------------------------------------------------- */
+
+:root {
+  --nasuke-c-bg: var(--nasuke-c-white);
+  --nasuke-c-bg-soft: var(--nasuke-c-white-soft);
+  --nasuke-c-bg-mute: var(--nasuke-c-white-mute);
+  --nasuke-c-bg-alt: var(--nasuke-c-white-soft);
+
+  --nasuke-c-divider: var(--nasuke-c-divider-light-1);
+  --nasuke-c-divider-light: var(--nasuke-c-divider-light-2);
+
+  --nasuke-c-text-1: var(--nasuke-c-text-light-1);
+  --nasuke-c-text-2: var(--nasuke-c-text-light-2);
+  --nasuke-c-text-3: var(--nasuke-c-text-light-3);
+  --nasuke-c-text-4: var(--nasuke-c-text-light-4);
+
+  --nasuke-c-text-code: var(--nasuke-c-indigo-soft);
+
+  --nasuke-c-brand: var(--nasuke-c-green);
+  --nasuke-c-brand-light: var(--nasuke-c-green-light);
+  --nasuke-c-brand-lighter: var(--nasuke-c-green-lighter);
+  --nasuke-c-brand-dark: var(--nasuke-c-green-dark);
+  --nasuke-c-brand-darker: var(--nasuke-c-green-darker);
+}
+
+.dark {
+  --nasuke-c-bg: var(--nasuke-c-black-soft);
+  --nasuke-c-bg-soft: var(--nasuke-c-black-mute);
+  --nasuke-c-bg-mute: var(--nasuke-c-gray-dark-3);
+  --nasuke-c-bg-alt: var(--nasuke-c-black);
+
+  --nasuke-c-divider: var(--nasuke-c-divider-dark-1);
+  --nasuke-c-divider-light: var(--nasuke-c-divider-dark-2);
+
+  --nasuke-c-divider-inverse: var(--nasuke-c-divider-light-1);
+  --nasuke-c-divider-inverse-light: var(--nasuke-c-divider-light-2);
+
+  --nasuke-c-text-1: var(--nasuke-c-text-dark-1);
+  --nasuke-c-text-2: var(--nasuke-c-text-dark-2);
+  --nasuke-c-text-3: var(--nasuke-c-text-dark-3);
+  --nasuke-c-text-4: var(--nasuke-c-text-dark-4);
+
+  --nasuke-c-text-inverse-1: var(--nasuke-c-text-light-1);
+  --nasuke-c-text-inverse-2: var(--nasuke-c-text-light-2);
+  --nasuke-c-text-inverse-3: var(--nasuke-c-text-light-3);
+  --nasuke-c-text-inverse-4: var(--nasuke-c-text-light-4);
+
+  --nasuke-c-text-code: var(--nasuke-c-indigo-lighter);
+}
+
+/**
+ * Typography
+ * -------------------------------------------------------------------------- */
+
+:root {
+  --nasuke-font-family-base: 'Inter var experimental', 'Inter var',
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
+    Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  --nasuke-font-family-mono: Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+/**
+ * Layouts
+ * -------------------------------------------------------------------------- */
+
+:root {
+  --nasuke-layout-max-width: 1440px;
+}
+
+/**
+ * Component: Code
+ * -------------------------------------------------------------------------- */
+
+:root {
+  --nasuke-code-line-height: 1.7;
+  --nasuke-code-font-size: 0.875em;
+
+  --nasuke-code-block-color: var(--nasuke-c-text-dark-1);
+  --nasuke-code-block-bg: #292d3e;
+
+  --nasuke-code-line-highlight-color: rgba(0, 0, 0, 0.5);
+  --nasuke-code-line-number-color: var(--nasuke-c-text-dark-3);
+
+  --nasuke-code-copy-code-hover-bg: rgba(255, 255, 255, 0.05);
+  --nasuke-code-copy-code-active-text: var(--nasuke-c-text-dark-2);
+}
+
+/**
+ * Icons
+ * -------------------------------------------------------------------------- */
+
+:root {
+  --nasuke-icon-copy: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' height='20' width='20' stroke='rgba(128,128,128,1)' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2'/%3E%3C/svg%3E");
+  --nasuke-icon-copied: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' height='20' width='20' stroke='rgba(128,128,128,1)' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2m-6 9 2 2 4-4'/%3E%3C/svg%3E");
+  --nasuke-icon-tip: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 1024 1024' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M512 960C264.58 960 64 759.42 64 512S264.58 64 512 64s448 200.58 448 448-200.58 448-448 448z m0-832c-212.08 0-384 171.92-384 384s171.92 384 384 384 384-171.92 384-384-171.92-384-384-384z m0 112c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48z m0 160c-17.67 0-32 14.33-32 32v320c0 17.67 14.33 32 32 32 17.67 0 32-14.33 32-32V432c0-17.67-14.33-32-32-32z' fill='%2321b8a3'/%3E%3C/svg%3E");
+}
+
+.dark {
+  --nasuke-code-block-bg: var(--nasuke-c-bg-alt);
+}
+
+/**
+ * Z-indexes
+ * -------------------------------------------------------------------------- */
+
+:root {
+  --nasuke-z-index-local-nav: 10;
+  --nasuke-z-index-nav: 20;
+  --nasuke-z-index-layout-top: 30;
+  --nasuke-z-index-backdrop: 40;
+  --nasuke-z-index-sidebar: 50;
+  --nasuke-z-index-footer: 60;
+}
+
+/**
+ * Component: Button
+ * -------------------------------------------------------------------------- */
+
+:root {
+  --nasuke-button-brand-border: var(--nasuke-c-brand-light);
+  --nasuke-button-brand-text: var(--nasuke-c-text-dark-1);
+  --nasuke-button-brand-bg: var(--nasuke-c-brand);
+  --nasuke-button-brand-hover-border: var(--nasuke-c-brand-light);
+  --nasuke-button-brand-hover-text: var(--nasuke-c-text-dark-1);
+  --nasuke-button-brand-hover-bg: var(--nasuke-c-brand-light);
+  --nasuke-button-brand-active-border: var(--nasuke-c-brand-light);
+  --nasuke-button-brand-active-text: var(--nasuke-c-text-dark-1);
+  --nasuke-button-brand-active-bg: var(--nasuke-button-brand-bg);
+
+  --nasuke-button-alt-border: var(--nasuke-c-gray-light-3);
+  --nasuke-button-alt-text: var(--nasuke-c-text-light-1);
+  --nasuke-button-alt-bg: var(--nasuke-c-gray-light-5);
+  --nasuke-button-alt-hover-border: var(--nasuke-c-gray-light-3);
+  --nasuke-button-alt-hover-text: var(--nasuke-c-text-light-1);
+  --nasuke-button-alt-hover-bg: var(--nasuke-c-gray-light-4);
+  --nasuke-button-alt-active-border: var(--nasuke-c-gray-light-3);
+  --nasuke-button-alt-active-text: var(--nasuke-c-text-light-1);
+  --nasuke-button-alt-active-bg: var(--nasuke-c-gray-light-3);
+
+  --nasuke-button-sponsor-border: var(--nasuke-c-gray-light-3);
+  --nasuke-button-sponsor-text: var(--nasuke-c-text-light-2);
+  --nasuke-button-sponsor-bg: transparent;
+  --nasuke-button-sponsor-hover-border: var(--nasuke-c-sponsor);
+  --nasuke-button-sponsor-hover-text: var(--nasuke-c-sponsor);
+  --nasuke-button-sponsor-hover-bg: transparent;
+  --nasuke-button-sponsor-active-border: var(--nasuke-c-sponsor);
+  --nasuke-button-sponsor-active-text: var(--nasuke-c-sponsor);
+  --nasuke-button-sponsor-active-bg: transparent;
+}
+
+.dark {
+  --nasuke-button-brand-border: var(--nasuke-c-brand-light);
+  --nasuke-button-brand-text: var(--nasuke-c-text-dark-1);
+  --nasuke-button-brand-bg: var(--nasuke-c-brand-dark);
+  --nasuke-button-brand-hover-border: var(--nasuke-c-brand-lighter);
+  --nasuke-button-brand-hover-text: var(--nasuke-c-text-dark-1);
+  --nasuke-button-brand-hover-bg: var(--nasuke-c-brand);
+  --nasuke-button-brand-active-border: var(--nasuke-c-brand-lighter);
+  --nasuke-button-brand-active-text: var(--nasuke-c-text-dark-1);
+  --nasuke-button-brand-active-bg: var(--nasuke-button-brand-bg);
+
+  --nasuke-button-alt-border: var(--nasuke-c-gray-dark-2);
+  --nasuke-button-alt-text: var(--nasuke-c-text-dark-1);
+  --nasuke-button-alt-bg: var(--nasuke-c-bg-mute);
+  --nasuke-button-alt-hover-border: var(--nasuke-c-gray-dark-2);
+  --nasuke-button-alt-hover-text: var(--nasuke-c-text-dark-1);
+  --nasuke-button-alt-hover-bg: var(--nasuke-c-gray-dark-2);
+  --nasuke-button-alt-active-border: var(--nasuke-c-gray-dark-2);
+  --nasuke-button-alt-active-text: var(--nasuke-c-text-dark-1);
+  --nasuke-button-alt-active-bg: var(--nasuke-button-alt-bg);
+
+  --nasuke-button-sponsor-border: var(--nasuke-c-gray-dark-1);
+  --nasuke-button-sponsor-text: var(--nasuke-c-text-dark-2);
+}
+
+/**
+ * Component: Custom Block
+ * -------------------------------------------------------------------------- */
+
+:root {
+  --nasuke-custom-block-code-font-size: 13px;
+
+  --nasuke-custom-block-info-border: var(--nasuke-c-divider-light);
+  --nasuke-custom-block-info-text: var(--nasuke-c-text-2);
+  --nasuke-custom-block-info-bg: var(--nasuke-c-white-soft);
+  --nasuke-custom-block-info-code-bg: var(--nasuke-c-gray-light-4);
+
+  --nasuke-custom-block-tip-border: var(--nasuke-c-green-dimm-1);
+  --nasuke-custom-block-tip-text: var(--nasuke-c-green-darker);
+  --nasuke-custom-block-tip-bg: var(--nasuke-c-green-dimm-3);
+  --nasuke-custom-block-tip-code-bg: var(--nasuke-custom-block-tip-bg);
+
+  --nasuke-custom-block-warning-border: var(--nasuke-c-yellow-dimm-1);
+  --nasuke-custom-block-warning-text: var(--nasuke-c-yellow-darker);
+  --nasuke-custom-block-warning-bg: var(--nasuke-c-yellow-dimm-3);
+  --nasuke-custom-block-warning-code-bg: var(--nasuke-custom-block-warning-bg);
+
+  --nasuke-custom-block-danger-border: var(--nasuke-c-red-dimm-1);
+  --nasuke-custom-block-danger-text: var(--nasuke-c-red-darker);
+  --nasuke-custom-block-danger-bg: var(--nasuke-c-red-dimm-3);
+  --nasuke-custom-block-danger-code-bg: var(--nasuke-custom-block-danger-bg);
+}
+
+.dark {
+  --nasuke-custom-block-info-border: var(--nasuke-c-divider-light);
+  --nasuke-custom-block-info-bg: var(--nasuke-c-black-mute);
+  --nasuke-custom-block-info-code-bg: var(--nasuke-c-gray-dark-4);
+
+  --nasuke-custom-block-tip-border: var(--nasuke-c-green-dimm-2);
+  --nasuke-custom-block-tip-text: var(--nasuke-c-green-light);
+
+  --nasuke-custom-block-warning-border: var(--nasuke-c-yellow-dimm-2);
+  --nasuke-custom-block-warning-text: var(--nasuke-c-yellow-light);
+
+  --nasuke-custom-block-danger-border: var(--nasuke-c-red-dimm-2);
+  --nasuke-custom-block-danger-text: var(--nasuke-c-red-light);
+}
+
+/**
+ * Component: Nav
+ * -------------------------------------------------------------------------- */
+
+:root {
+  --nasuke-nav-height: 56px;
+}
+
+/**
+ * Component: Sidebar
+ * -------------------------------------------------------------------------- */
+
+:root {
+  --nasuke-sidebar-width: 272px;
+}
+
+/**
+ * Component: Home
+ * -------------------------------------------------------------------------- */
+
+:root {
+  --nasuke-home-hero-name-color: transparent;
+  --nasuke-home-hero-name-background: -webkit-linear-gradient(
+    120deg,
+    var(--nasuke-c-brand) 30%,
+    #41d1ff
+  );
+
+  --nasuke-home-hero-image-background-image: none;
+  --nasuke-home-hero-image-filter: none;
+}
+
+/**
+ * Shadows
+ * -------------------------------------------------------------------------- */
+
+:root {
+  --nasuke-shadow-1: 0 1px 2px rgba(0, 0, 0, 0.04),
+    0 1px 2px rgba(0, 0, 0, 0.06);
+  --nasuke-shadow-2: 0 3px 12px rgba(0, 0, 0, 0.07),
+    0 1px 4px rgba(0, 0, 0, 0.07);
+  --nasuke-shadow-3: 0 12px 32px rgba(0, 0, 0, 0.1),
+    0 2px 6px rgba(0, 0, 0, 0.08);
+  --nasuke-shadow-4: 0 14px 44px rgba(0, 0, 0, 0.12),
+    0 3px 9px rgba(0, 0, 0, 0.12);
+  --nasuke-shadow-5: 0 18px 56px rgba(0, 0, 0, 0.16),
+    0 4px 12px rgba(0, 0, 0, 0.16);
+}

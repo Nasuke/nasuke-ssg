@@ -1,5 +1,8 @@
 import { useState } from 'react';
 import { Content, usePageData } from '@runtime'
+import { Nav } from '../components/Nav'
+import "../style/base.css"
+import "../style/vars.css"
 import 'uno.css'
 
 
@@ -19,7 +22,7 @@ export function Layout() {
   };
   return (
     <div>
-      { getContent() }
+      <Nav />
     </div>
   );
 }

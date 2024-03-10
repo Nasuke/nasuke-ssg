@@ -29,6 +29,12 @@ export function PluginConfig(
           alias: {
             '@runtime': join(PACKAGE_ROOT, 'src', 'runtime', 'index.ts')
           }
+        },
+        // modules里面默认使用驼峰
+        css: {
+          modules: {
+            localsConvention: 'camelCaseOnly'
+          }
         }
       }
     },
