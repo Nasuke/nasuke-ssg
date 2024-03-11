@@ -4,6 +4,7 @@ import { Nav } from '../components/Nav'
 import "../style/base.css"
 import "../style/vars.css"
 import 'uno.css'
+import { HomeLayout } from './HomeLayout';
 
 
 export function Layout() {
@@ -13,7 +14,7 @@ export function Layout() {
   // 根据 pageType 分发不同的页面内容
   const getContent = () => {
     if (pageType === 'home') {
-      return <div>Home 页面</div>;
+      return <HomeLayout />
     } else if (pageType === 'doc') {
       return <div>正文页面</div>;
     } else {
@@ -23,6 +24,7 @@ export function Layout() {
   return (
     <div>
       <Nav />
+      { getContent() }
     </div>
   );
 }
