@@ -1,7 +1,7 @@
-import styles from "./index.module.scss";
-import { NavItemWithLink } from "shared/types";
-import { usePageData } from "@runtime";
-import { SwitchAppearance } from "../SwitchAppearance";
+import styles from './index.module.scss';
+import { NavItemWithLink } from 'shared/types';
+import { usePageData } from '@runtime';
+import { SwitchAppearance } from '../SwitchAppearance';
 
 export function MenuItem(item: NavItemWithLink) {
   return (
@@ -16,24 +16,19 @@ export function MenuItem(item: NavItemWithLink) {
 export function Nav() {
   const { siteData } = usePageData();
   const nav = siteData.themeConfig.nav || [];
-  console.log("navs =>", nav);
-  
   return (
-    <header fixed="~" pos="t-0 l-0" w="full">
-      {/* divider-bottom 为自定义规则 */}
+    <header fixed="~" pos="t-0 l-0" w="full" z="10">
       <div
         flex="~"
         items="center"
         justify="between"
-        className="px-8 h-14 divider-bottom"
+        className={`h-14 divider-bottom ${styles.nav}`}
       >
         <div>
           <a
             href="/"
             hover="opacity-60"
-            flex="~"
-            items="center"
-            className="w-full h-full text-1rem font-semibold"
+            className="w-full h-full text-1rem font-semibold flex items-center"
           >
             Nasuke.js
           </a>
@@ -47,11 +42,12 @@ export function Nav() {
           </div>
 
           {/* 白天/夜间模式切换 */}
-          <div flex="~" before="menu-item-before">
+          <div before="menu-item-before" flex="~">
             <SwitchAppearance />
           </div>
+
           {/* 相关链接 */}
-          <div className={styles.socialLinkIcon} ml="2" before="menu-item-before">
+          <div className={styles.socialLinkIcon} before="menu-item-before">
             <a href="/">
               <div className="i-carbon-logo-github w-5 h-5 fill-current"></div>
             </a>

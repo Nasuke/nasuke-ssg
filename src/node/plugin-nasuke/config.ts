@@ -2,6 +2,8 @@ import { join, relative } from 'path';
 import { SiteConfig } from '../../shared/types/index';
 import { Plugin, normalizePath } from 'vite';
 import { PACKAGE_ROOT } from 'node/constants';
+import fs from 'fs-extra';
+import sirv from 'sirv';
 
 const SITE_DATA_ID = "nasuke:site-data"
 
@@ -53,6 +55,13 @@ export function PluginConfig(
           // 1- 利用configureServer获取到server实例调用restart  缺点: 不会读取新的配置
           // 2- dev.ts中重启
         await restart()
+      }
+    },
+    configureServer(server) {
+      const publicDir = join(config.root, 'public')
+      // 增加静态资源处理中间件
+      if(fs.pathExistsSync(publicDir)) {
+        server.middlewares.use(sirv(publicDir))
       }
     }
 

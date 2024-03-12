@@ -56,7 +56,7 @@ export async function resolveUserConfig(
   command: 'serve' | 'build',
   mode: 'development' | 'production'
 ) {
-  // 1. 获取配置文件路径
+  // 1. 获取配置文件路径 js | ts
   const configPath = getUserConfigPath(root)
   // 2. 读取配置文件的内容
   const result = await loadConfigFromFile({

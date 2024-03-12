@@ -5,6 +5,7 @@ import "../style/base.css"
 import "../style/vars.css"
 import 'uno.css'
 import { HomeLayout } from './HomeLayout';
+import { DocLayout } from './DocLayout';
 
 
 export function Layout() {
@@ -16,7 +17,7 @@ export function Layout() {
     if (pageType === 'home') {
       return <HomeLayout />
     } else if (pageType === 'doc') {
-      return <div>正文页面</div>;
+      return <DocLayout />
     } else {
       return <div>404 页面</div>;
     }
