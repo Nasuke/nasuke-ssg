@@ -1,8 +1,8 @@
-import { useState } from 'react';
-import { Content, usePageData } from '@runtime'
+import { usePageData } from '@runtime'
 import { Nav } from '../components/Nav'
 import "../style/base.css"
 import "../style/vars.css"
+import "../style/doc.css"
 import 'uno.css'
 import { HomeLayout } from './HomeLayout';
 import { DocLayout } from './DocLayout';
@@ -25,7 +25,13 @@ export function Layout() {
   return (
     <div>
       <Nav />
-      { getContent() }
+      <section
+        style={{
+          paddingTop: 'var(--nasuke-nav-height)'
+        }}
+      >
+        {getContent()}
+      </section>
     </div>
   );
 }

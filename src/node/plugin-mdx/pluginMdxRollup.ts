@@ -9,6 +9,7 @@ import remarkPluginFrontmatter from 'remark-frontmatter';
 import { rehypePluginShiki } from './rehypePlugins/shiki';
 import shiki from 'shiki';
 import { remarkPluginToc } from './remarkPlugins/toc';
+import { rehypePluginPreWrapper } from './rehypePlugins/preWrapper';
 
 export async function pluginMdxRollup(): Promise<Plugin> {
   return pluginMdx({
@@ -32,6 +33,7 @@ export async function pluginMdxRollup(): Promise<Plugin> {
           }
         }
       ],
+      rehypePluginPreWrapper,
       [
         rehypePluginShiki,
         {
