@@ -19,7 +19,7 @@ export async function bundle(root: string, config: SiteConfig) {
     mode: 'production',
     root,
     ssr: {
-      noExternal: ['react-router-dom']
+      noExternal: ['react-router-dom', 'lodash-es']
     },
     // 创建插件
     plugins: await createVitePlugins(config, undefined, isServer),
@@ -76,7 +76,7 @@ export async function renderPage(render,routes: Route[], root, clientBundle) {
   await Promise.all(
     routes.map(async (route) => {
       const routePath = route.path
-      const appHtml = render(routePath)
+      const appHtml = await render(routePath)
       // 借用render方法将组件渲染成html 插入模版
       const html = `
       <!DOCTYPE html>

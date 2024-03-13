@@ -30,6 +30,7 @@
     "@commitlint/config-conventional": "^17.2.0",
     "@mdx-js/mdx": "^2.1.5",
     "@playwright/test": "1.26.1",
+    "@types/estree-jsx": "^1.0.5",
     "@types/fs-extra": "^9.0.13",
     "@types/hast": "^2.3.4",
     "@types/lodash-es": "^4.17.6",

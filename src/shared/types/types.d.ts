@@ -1,17 +1,13 @@
+/// <reference types="vite/client" />
+
 declare module 'nasuke:site-data' {
-  import type {UserConfig} from 'shared/types';
-  const siteData: UserConfig
-  export default siteData
+  import type { UserConfig } from 'shared/types';
+  const siteData: UserConfig;
+  export default siteData;
 }
+
 
 declare module 'nasuke:routes' {
-  import { RouteObject } from 'react-router-dom';
-  const routes: RouteObject[];
-  export { routes };
-}
-
-
-declare module "*.module.scss" {
-  const classes: { [key: string]: string };
-  export default classes;
+  import type { Route } from 'node/plugin-routes';
+  export const routes: Route[];
 }
