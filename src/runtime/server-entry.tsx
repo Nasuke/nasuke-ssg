@@ -1,21 +1,32 @@
 import { App, initPageData } from './App';
 import { renderToString } from 'react-dom/server';
-import { StaticRouter } from 'react-router-dom/server'
+import { StaticRouter } from 'react-router-dom/server';
 import { DataContext } from './hooks';
 
-// compoent render for ssr
-export async function render(pagePath: string) {
-  // 生产 pageData
-  const pageData = await initPageData(pagePath)
-  return renderToString(
-    
-    <DataContext.Provider value={pageData}>
-      <StaticRouter location={pagePath}>
-      <App />
-    </StaticRouter>
-    </DataContext.Provider>
-  );
+export interface RenderResult {
+  appHtml: string;
+  islandProps: unknown[];
+  islandToPathMap: Record<string, string>;
 }
 
-// 导出虚拟模块中的路由数据
-export { routes } from 'nasuke:routes'
+// For ssr component render
+export async function render(pagePath: string) {
+  const pageData = await initPageData(pagePath);
+  const { clearIslandData, data } = await import('./jsx-runtime');
+  clearIslandData();
+  const appHtml = renderToString(
+    <DataContext.Provider value={pageData}>
+      <StaticRouter location={pagePath}>
+        <App />
+      </StaticRouter>
+    </DataContext.Provider>
+  );
+  const { islandProps, islandToPathMap } = data;
+  return {
+    appHtml,
+    islandProps,
+    islandToPathMap
+  };
+}
+
+export { routes } from 'nasuke:routes';

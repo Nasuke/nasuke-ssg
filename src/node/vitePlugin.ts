@@ -7,6 +7,9 @@ import { Plugin } from 'vite'
 import pluginReact from '@vitejs/plugin-react';
 import pluginUnocss from 'unocss/vite'
 import unocssOptions from './unocssOptions'
+import { join } from "path";
+import { PACKAGE_ROOT } from "./constants";
+import babelPluginIsland from "./babel-plugin-island";
 
 
 export async function createVitePlugins(
@@ -18,7 +21,13 @@ export async function createVitePlugins(
     pluginUnocss(unocssOptions),
     pluginIndexHtml(),
     pluginReact({
-      jsxRuntime: 'automatic'
+      jsxRuntime: 'automatic',
+      jsxImportSource: isSSR
+        ? join(PACKAGE_ROOT, 'src', 'runtime')
+        : 'react',
+      babel: {
+        plugins: [babelPluginIsland]
+      }
     }),
     PluginConfig(config, restartServer),
     pluginRoutes({

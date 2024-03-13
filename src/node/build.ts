@@ -1,108 +1,211 @@
-import { InlineConfig, build as ViteBuild, normalizePath } from 'vite';
+import { build as viteBuild, InlineConfig } from 'vite';
 import type { RollupOutput } from 'rollup';
-import { CLIENT_ENTRY_PATH, SERVER_ENTRY_PATH } from './constants';
-import { dirname, join } from 'path';
+import {
+  CLIENT_ENTRY_PATH,
+  EXTERNALS,
+  MASK_SPLITTER,
+  PACKAGE_ROOT,
+  SERVER_ENTRY_PATH
+} from './constants';
+import path, { dirname, join } from 'path';
 import fs from 'fs-extra';
-
-
-
-import { pathToFileURL } from 'url';
+// import ora from 'ora';
 import { SiteConfig } from 'shared/types';
 import { createVitePlugins } from './vitePlugin';
 import { Route } from './plugin-routes';
+import { RenderResult } from '../runtime/server-entry';
 
+const CLIENT_OUTPUT = 'build';
 
+// Client entry -> react & react-dom
+// Island bundle -> react
 
 export async function bundle(root: string, config: SiteConfig) {
-  // 抽离公共配置
-  const resolveViteConfig = async (isServer: boolean): Promise<InlineConfig> => ({
+  const resolveViteConfig = async (
+    isServer: boolean
+  ): Promise<InlineConfig> => ({
     mode: 'production',
     root,
+    plugins: await createVitePlugins(config, undefined, isServer),
     ssr: {
       noExternal: ['react-router-dom', 'lodash-es']
     },
-    // 创建插件
-    plugins: await createVitePlugins(config, undefined, isServer),
     build: {
+      minify: false,
       ssr: isServer,
-      outDir: isServer ? join(root, '.temp') : join(root, 'build'),
+      outDir: isServer
+        ? path.join(root, '.temp')
+        : path.join(root, CLIENT_OUTPUT),
       rollupOptions: {
         input: isServer ? SERVER_ENTRY_PATH : CLIENT_ENTRY_PATH,
         output: {
           format: isServer ? 'cjs' : 'esm'
-        }
+        },
+        external: EXTERNALS
       }
     }
   });
+  // const spinner = ora();
+  // spinner.start(`Building client + server bundles...`);
 
-  // 并发打包
   try {
     const [clientBundle, serverBundle] = await Promise.all([
-      // client
-      ViteBuild(await resolveViteConfig(false)),
-      // server
-      ViteBuild(await resolveViteConfig(true))
+      // client build
+      viteBuild(await resolveViteConfig(false)),
+      // server build
+      viteBuild(await resolveViteConfig(true))
     ]);
+    const publicDir = join(root, 'public');
+    if (fs.pathExistsSync(publicDir)) {
+      await fs.copy(publicDir, join(root, CLIENT_OUTPUT));
+    }
+    await fs.copy(join(PACKAGE_ROOT, 'vendors'), join(root, CLIENT_OUTPUT));
     return [clientBundle, serverBundle] as [RollupOutput, RollupOutput];
-  } catch (error) {
-    console.log(error);
+  } catch (e) {
+    console.log(e);
   }
 }
 
-console.log('Building client + server bundles...');
+async function buildIslands(
+  root: string,
+  islandPathToMap: Record<string, string>
+) {
+  // { Aside: 'xxx' }
+  // 内容
+  // import { Aside } from 'xxx'
+  // window.ISLANDS = { Aside }
+  // window.ISLAND_PROPS = JSON.parse(
+  // document.getElementById('island-props').textContent
+  // );
+  const islandsInjectCode = `
+    ${Object.entries(islandPathToMap)
+      .map(
+        ([islandName, islandPath]) =>
+          `import { ${islandName} } from '${islandPath}'`
+      )
+      .join('')}
+window.ISLANDS = { ${Object.keys(islandPathToMap).join(', ')} };
+window.ISLAND_PROPS = JSON.parse(
+  document.getElementById('island-props').textContent
+);
+  `;
+  const injectId = 'island:inject';
+  return viteBuild({
+    mode: 'production',
+    esbuild: {
+      jsx: 'automatic'
+    },
+    build: {
+      outDir: path.join(root, '.temp'),
+      rollupOptions: {
+        input: injectId,
+        external: EXTERNALS
+      }
+    },
+    plugins: [
+      {
+        name: 'island:inject',
+        enforce: 'post',
+        resolveId(id) {
+          if (id.includes(MASK_SPLITTER)) {
+            const [originId, importer] = id.split(MASK_SPLITTER);
+            return this.resolve(originId, importer, { skipSelf: true });
+          }
 
-export async function build(root: string = process.cwd(), config: SiteConfig) {
-  const [clientBundle] = await bundle(root, config);
-  // 引入 ssr 入口模块
-  const serverBundleEntryPath = join(root, '.temp', 'server-entry.js');
-  // 兼容windows处理 需要使用pathToFileURL
-  // 拿到render函数即路由数据
-  const { render, routes } = await import(
-    pathToFileURL(serverBundleEntryPath).toString()
-  );
-
-  // 渲染出html 写入
-  await renderPage(render, routes, root, clientBundle);
+          if (id === injectId) {
+            return id;
+          }
+        },
+        load(id) {
+          if (id === injectId) {
+            return islandsInjectCode;
+          }
+        },
+        generateBundle(_, bundle) {
+          for (const name in bundle) {
+            if (bundle[name].type === 'asset') {
+              delete bundle[name];
+            }
+          }
+        }
+      }
+    ]
+  });
 }
 
-export async function renderPage(render,routes: Route[], root, clientBundle) {
-  // clientChunk for hydration
+export async function renderPages(
+  render: (url: string) => RenderResult,
+  routes: Route[],
+  root: string,
+  clientBundle: RollupOutput
+) {
+  console.log('Rendering page in server side...');
   const clientChunk = clientBundle.output.find(
     (chunk) => chunk.type === 'chunk' && chunk.isEntry
   );
-  console.log('Rendering page in server side');
-
-  // 针对每个路由生成对应的HTML内容 并写入磁盘
-  await Promise.all(
+  return Promise.all(
     routes.map(async (route) => {
-      const routePath = route.path
-      const appHtml = await render(routePath)
-      // 借用render方法将组件渲染成html 插入模版
+      const routePath = route.path;
+      const {
+        appHtml,
+        islandToPathMap,
+        islandProps = []
+      } = await render(routePath);
+      const styleAssets = clientBundle.output.filter(
+        (chunk) => chunk.type === 'asset' && chunk.fileName.endsWith('.css')
+      );
+      const islandBundle = await buildIslands(root, islandToPathMap);
+      const islandsCode = (islandBundle as RollupOutput).output[0].code;
+      const normalizeVendorFilename = (fileName: string) =>
+        fileName.replace(/\//g, '_') + '.js';
+
       const html = `
-      <!DOCTYPE html>
-      <html>
-        <head>
-          <meta charset="utf-8">
-          <meta name="viewport" content="width=device-width,initial-scale=1">
-          <title>title</title>
-          <meta name="description" content="xxx">
-        </head>
-        <body>
-          <div id="root">${appHtml}</div>
-          <script type="module" src="/${clientChunk?.fileName}"></script>
-        </body>
-      </html>`.trim();
-      // 处理写入的文件后缀
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>title</title>
+    <meta name="description" content="xxx">
+    ${styleAssets
+      .map((item) => `<link rel="stylesheet" href="/${item.fileName}">`)
+      .join('\n')}
+    <script type="importmap">
+      {
+        "imports": {
+          ${EXTERNALS.map(
+            (name) => `"${name}": "/${normalizeVendorFilename(name)}"`
+          ).join(',')}
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <div id="root">${appHtml}</div>
+    <script type="module">${islandsCode}</script>
+    <script type="module" src="/${clientChunk?.fileName}"></script>
+    <script id="island-props">${JSON.stringify(islandProps)}</script>
+  </body>
+</html>`.trim();
       const fileName = routePath.endsWith('/')
-          ? `${routePath}index.html`
-          : `${routePath}.html`
-      // 写入前确保文件存在
-      await fs.ensureDir(normalizePath(join(root, 'build', dirname(fileName))))
-      await fs.writeFile(normalizePath(join(root, 'build', fileName)), html)
+        ? `${routePath}index.html`
+        : `${routePath}.html`;
+      await fs.ensureDir(join(root, 'build', dirname(fileName)));
+      await fs.writeFile(join(root, 'build', fileName), html);
     })
-  )
-  await fs.remove(normalizePath(join(root, '.temp')))
+  );
+}
 
-  // remove server bundle
-
+export async function build(root: string = process.cwd(), config: SiteConfig) {
+  // 1. bundle - client 端 + server 端
+  const [clientBundle] = await bundle(root, config);
+  // 2. 引入 server-entry 模块
+  const serverEntryPath = join(root, '.temp', 'server-entry.js');
+  const { render, routes } = await import(serverEntryPath);
+  // 3. 服务端渲染，产出 HTML
+  try {
+    await renderPages(render, routes, root, clientBundle);
+  } catch (e) {
+    console.log('Render page error.\n', e);
+  }
 }

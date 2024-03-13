@@ -22,3 +22,14 @@ export const SERVER_ENTRY_PATH = join(
 export const MD_REGEX = /\.mdx?$/;
 
 export const MASK_SPLITTER = '!!ISLAND!!';
+
+export type PropsWithIsland = {
+  __island?: boolean;
+};
+
+export const EXTERNALS = [
+  'react',
+  'react-dom',
+  'react-dom/client',
+  'react/jsx-runtime',
+];

@@ -2,12 +2,13 @@ import { Header } from 'shared/types';
 import { useRef, useEffect } from 'react';
 import { bindingAsideScroll, scrollToTarget } from '../../logic/asideScroll';
 import { useHeaders } from '../../logic/useHeaders';
+import { PropsWithIsland } from 'node/constants';
 
 interface AsideProps {
   headers: Header[];
 }
 
-export function Aside(props: AsideProps) {
+export function Aside(props: AsideProps & PropsWithIsland) {
   const { headers: rawHeaders = [] } = props;
   const headers = useHeaders(rawHeaders);
   const hasOutline = headers.length > 0;
@@ -46,7 +47,7 @@ export function Aside(props: AsideProps) {
     <div
       flex="~ col 1"
       style={{
-        width: 'var(--island-aside-width)'
+        width: 'var(--nasuke-aside-width)'
       }}
     >
       <div>

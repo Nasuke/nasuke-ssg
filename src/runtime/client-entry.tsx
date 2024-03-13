@@ -1,32 +1,45 @@
-import { createRoot } from 'react-dom/client';
+import { createRoot, hydrateRoot } from 'react-dom/client';
 import { App, initPageData } from './App';
-
-import { BrowserRouter } from 'react-router-dom'
-
-// 该字符串是虚拟模块的id 通过插件去匹配该id去做对应处理
-import siteData from 'nasuke:site-data'
+import { BrowserRouter } from 'react-router-dom';
 import { DataContext } from './hooks';
+import { ComponentType } from 'react';
 
+declare global {
+  interface Window {
+    ISLANDS: Record<string, ComponentType<unknown>>;
+    ISLAND_PROPS: unknown[];
+  }
+}
 
 async function renderInBrowser() {
-  console.log(siteData);
-  
   const containerEl = document.getElementById('root');
   if (!containerEl) {
     throw new Error('#root element not found');
   }
-
-  // 初始化 PageData
-  const pageData = await initPageData(location.pathname)
-
-  createRoot(containerEl).render(
-
-    <DataContext.Provider value={pageData}>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </DataContext.Provider>
-  );
+  if (import.meta.env.DEV) {
+    // 初始化 PageData
+    const pageData = await initPageData(location.pathname);
+    createRoot(containerEl).render(
+      <DataContext.Provider value={pageData}>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </DataContext.Provider>
+    );
+  } else {
+    // 生产环境下的 Partial Hydration
+    const islands = document.querySelectorAll('[__island]');
+    if (islands.length === 0) {
+      return;
+    }
+    for (const island of islands) {
+      // Aside:0
+      const [id, index] = island.getAttribute('__island').split(':');
+      const Element = window.ISLANDS[id] as ComponentType<unknown>;
+      hydrateRoot(island, <Element {...window.ISLAND_PROPS[index]} />);
+    }
+  }
 }
 
 renderInBrowser();
+
