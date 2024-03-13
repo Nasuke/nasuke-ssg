@@ -69,6 +69,7 @@ export interface PageData {
   frontmatter: FrontMatter;
   pageType: PageType;
   toc?: Header[];
+  title: string
 }
 // 路由组件编译过后的模块内容
 export interface PageModule {
@@ -76,6 +77,7 @@ export interface PageModule {
   frontmatter?: FrontMatter;
   toc?: Header[];
   [key: string]: unknown;
+  title?: string
 }
 
 export interface Feature {

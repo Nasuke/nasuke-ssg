@@ -6,12 +6,14 @@ import "../style/doc.css"
 import 'uno.css'
 import { HomeLayout } from './HomeLayout';
 import { DocLayout } from './DocLayout';
+import { Helmet } from 'react-helmet-async'
+
 
 
 export function Layout() {
 
   const pageData = usePageData()
-  const { pageType } = pageData;
+  const { pageType, title } = pageData;
   // 根据 pageType 分发不同的页面内容
   const getContent = () => {
     if (pageType === 'home') {
@@ -25,6 +27,9 @@ export function Layout() {
   return (
     <div>
       <Nav />
+      <Helmet>
+        <title>{title}</title>
+      </Helmet>
       <section
         style={{
           paddingTop: 'var(--nasuke-nav-height)'

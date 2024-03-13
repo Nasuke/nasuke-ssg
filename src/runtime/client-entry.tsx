@@ -3,6 +3,7 @@ import { App, initPageData } from './App';
 import { BrowserRouter } from 'react-router-dom';
 import { DataContext } from './hooks';
 import { ComponentType } from 'react';
+import { HelmetProvider } from 'react-helmet-async';
 
 declare global {
   interface Window {
@@ -20,14 +21,15 @@ async function renderInBrowser() {
     // 初始化 PageData
     const pageData = await initPageData(location.pathname);
     createRoot(containerEl).render(
-      <DataContext.Provider value={pageData}>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
-      </DataContext.Provider>
+      <HelmetProvider>
+        <DataContext.Provider value={pageData}>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </DataContext.Provider>
+      </HelmetProvider>
     );
   } else {
-    // 生产环境下的 Partial Hydration
     const islands = document.querySelectorAll('[__island]');
     if (islands.length === 0) {
       return;
@@ -42,4 +44,3 @@ async function renderInBrowser() {
 }
 
 renderInBrowser();
-
