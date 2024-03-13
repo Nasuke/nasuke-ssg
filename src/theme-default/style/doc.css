@@ -333,6 +333,36 @@
    display: inline-block;
  }
  
+ .nasuke-doc div[class*='language-'].line-numbers-mode {
+   padding-left: 32px;
+ }
+ 
+ .nasuke-doc.line-number-disable div[class*='language-'].line-numbers-mode {
+   padding-left: 0px;
+ }
+ 
+ .nasuke-doc .line-numbers-wrapper {
+   position: absolute;
+   top: 0;
+   bottom: 0;
+   left: 0;
+   z-index: 3;
+   padding-top: 16px;
+   width: 36px;
+   text-align: center;
+   font-family: var(--nasuke-font-family-mono);
+   line-height: var(--nasuke-code-line-height);
+   font-size: var(--nasuke-code-font-size);
+   color: var(--nasuke-code-line-number-color);
+   transition: border-color 0.5s, color 0.5s;
+   display: flex;
+   flex-direction: column;
+ }
+ 
+ .nasuke-doc.line-number-disable .line-numbers-wrapper {
+   display: none;
+ }
+ 
  .nasuke-doc [class*='language-'] > button.copy {
    position: absolute;
    top: 8px;
@@ -402,4 +432,58 @@
  .nasuke-doc [class*='language-']:hover > button.copy + span.lang,
  .nasuke-doc [class*='language-'] > button.copy:focus + span.lang {
    opacity: 0;
+ }
+ 
+ /**
+    * Custom container
+    * -------------------------------------------------------------------------- */
+ 
+ .nasuke-doc .nasuke-directive {
+   border: 1px solid transparent;
+   border-radius: 8px;
+   padding: 16px 16px 8px;
+   line-height: 24px;
+   font-size: 14px;
+   margin: 16px 0;
+ }
+ 
+ .nasuke-doc .nasuke-directive .nasuke-directive-title {
+   font-weight: 700;
+   margin: 0;
+ }
+ 
+ .nasuke-doc .nasuke-directive .nasuke-directive-content p {
+   margin: 8px 0;
+ }
+ 
+ .nasuke-doc .nasuke-directive .nasuke-directive-icon {
+   display: inline-block;
+   width: 20px;
+   height: 20px;
+   margin-right: 3px;
+   background-image: var(--nasuke-icon-tip);
+ }
+ 
+ .nasuke-doc .nasuke-directive.tip {
+   border-color: var(--nasuke-custom-block-tip-border);
+   color: var(--nasuke-custom-block-tip-text);
+   background-color: var(--nasuke-custom-block-tip-bg);
+ }
+ 
+ .nasuke-doc .nasuke-directive.info {
+   border-color: var(--nasuke-custom-block-info-border);
+   color: var(--nasuke-custom-block-info-text);
+   background-color: var(--nasuke-custom-block-info-bg);
+ }
+ 
+ .nasuke-doc .nasuke-directive.warning {
+   border-color: var(--nasuke-custom-block-warning-border);
+   color: var(--nasuke-custom-block-warning-text);
+   background-color: var(--nasuke-custom-block-warning-bg);
+ }
+ 
+ .nasuke-doc .nasuke-directive.danger {
+   border-color: var(--nasuke-custom-block-danger-border);
+   color: var(--nasuke-custom-block-danger-text);
+   background-color: var(--nasuke-custom-block-danger-bg);
  }
