@@ -145,7 +145,12 @@ export async function renderPages(
     (chunk) => chunk.type === 'chunk' && chunk.isEntry
   );
   return Promise.all(
-    routes.map(async (route) => {
+    [
+      ...routes,
+      {
+        path: '/404'
+      }
+    ].map(async (route) => {
       const routePath = route.path;
       const helmetContext = {
         context: {}
@@ -170,6 +175,7 @@ export async function renderPages(
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="referrer" content="never">
     ${helmet?.title?.toString() || ''}
     ${helmet?.meta?.toString() || ''}
     ${helmet?.link?.toString() || ''}

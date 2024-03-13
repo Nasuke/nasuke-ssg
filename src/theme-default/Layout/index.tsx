@@ -7,6 +7,7 @@ import 'uno.css'
 import { HomeLayout } from './HomeLayout';
 import { DocLayout } from './DocLayout';
 import { Helmet } from 'react-helmet-async'
+import { NotFoundLayout } from './NotFoundLayout'
 
 
 
@@ -21,7 +22,7 @@ export function Layout() {
     } else if (pageType === 'doc') {
       return <DocLayout />
     } else {
-      return <div>404 页面</div>;
+      return <NotFoundLayout />
     }
   };
   return (
