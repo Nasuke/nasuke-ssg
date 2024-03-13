@@ -6,7 +6,7 @@ import { resolveConfig } from './config';
 import { preview } from './preview';
 
 // 版本号
-const cli = cac('island').version('0.0.1').help();
+const cli = cac('nasuke').version('0.0.1').help();
 
 cli
   .command('[root]', 'start dev server')

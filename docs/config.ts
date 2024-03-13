@@ -1,7 +1,7 @@
 import { defineConfig } from '../dist';
 
 export default defineConfig({
-  title: 'xxx',
+  title: 'Nasuke',
   themeConfig: {
     nav: [
       { text: '主页', link: '/' },
@@ -13,16 +13,20 @@ export default defineConfig({
           text: '教程',
           items: [
             {
-              text: '快速上手',
+              text: 'MPA VS SPA',
               link: '/guide/a'
             },
             {
-              text: '如何安装',
+              text: 'MDX',
               link: '/guide/b'
             },
            {
-             text: '注意事项',
-             link: '/guide/c'
+             text: 'normal',
+             link: '/guide/Counter'
+           },
+           {
+            text: 'vite',
+            link: '/guide/c'
            }
          ]
         }
