@@ -95,7 +95,7 @@ export async function renderPage(render,routes: Route[], root, clientBundle) {
       // 处理写入的文件后缀
       const fileName = routePath.endsWith('/')
           ? `${routePath}index.html`
-          : `${routePath}html`
+          : `${routePath}.html`
       // 写入前确保文件存在
       await fs.ensureDir(normalizePath(join(root, 'build', dirname(fileName))))
       await fs.writeFile(normalizePath(join(root, 'build', fileName)), html)

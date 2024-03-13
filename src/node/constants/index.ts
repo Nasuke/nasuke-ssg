@@ -20,3 +20,5 @@ export const SERVER_ENTRY_PATH = join(
 );
 // 匹配mdx文件
 export const MD_REGEX = /\.mdx?$/;
+
+export const MASK_SPLITTER = '!!ISLAND!!';
