@@ -6,6 +6,7 @@ import rehypePluginAutolinkHeadings from 'rehype-autolink-headings';
 import rehypePluginSlug from 'rehype-slug';
 import remarkPluginMDXFrontMatter from 'remark-mdx-frontmatter';
 import remarkPluginFrontmatter from 'remark-frontmatter';
+import remarkPluginMermaid from 'mdx-mermaid';
 import { rehypePluginShiki } from './rehypePlugins/shiki';
 import shiki from 'shiki';
 import { remarkPluginToc } from './remarkPlugins/toc';
@@ -17,6 +18,7 @@ export async function pluginMdxRollup(): Promise<Plugin> {
       remarkPluginGFM,
       remarkPluginFrontmatter,
       [remarkPluginMDXFrontMatter, { name: 'frontmatter' }],
+      [remarkPluginMermaid, { output: 'svg' }],
       remarkPluginToc
     ],
     rehypePlugins: [
@@ -37,7 +39,7 @@ export async function pluginMdxRollup(): Promise<Plugin> {
       [
         rehypePluginShiki,
         {
-          highlighter: await shiki.getHighlighter({theme: 'nord'})
+          highlighter: await shiki.getHighlighter({ theme: 'nord' })
         }
       ]
     ]

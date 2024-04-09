@@ -27,6 +27,10 @@ export default defineConfig({
            {
             text: 'vite',
             link: '/guide/c'
+           },
+           {
+            text: 'test',
+            link: '/guide/d'
            }
          ]
         }

@@ -93,6 +93,8 @@
     "github-slugger": "^2.0.0",
     "hast-util-from-html": "^1.0.0",
     "lodash-es": "^4.17.21",
+    "mdx-mermaid": "^2.0.0",
+    "mermaid": "^10.9.0",
     "ora": "^6.1.2",
     "polka": "^0.5.2",
     "react": "^18.2.0",

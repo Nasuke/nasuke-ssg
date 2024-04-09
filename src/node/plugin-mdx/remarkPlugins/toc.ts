@@ -4,7 +4,7 @@ import { visit } from 'unist-util-visit';
 import { Root } from 'mdast';
 // MdxjsEsm 表示 MDX 中嵌入的 ESM 导入/导出。它可以用在需要流动内容的地方。其内容由其 value 字段表示
 import type { MdxjsEsm } from 'mdast-util-mdxjs-esm';
-import type {Program} from 'estree-jsx'
+import type { Program } from 'estree-jsx';
 import { parse } from 'acorn';
 
 interface TocItem {
@@ -16,47 +16,45 @@ interface TocItem {
 interface ChildNode {
   type: 'link' | 'text' | 'inlineCode';
   value: string;
-  children?: ChildNode[]
+  children?: ChildNode[];
 }
 
-
-export const remarkPluginToc:Plugin<[], Root> = () => {
+export const remarkPluginToc: Plugin<[], Root> = () => {
   return (tree) => {
-    const toc:TocItem[] = []
+    const toc: TocItem[] = [];
     // 每次编译重新进行实例的初始化
-    const slugger = new Slugger()
-    let title = ""
+    const slugger = new Slugger();
+    let title = '';
     visit(tree, 'heading', (node) => {
       // boundary case
-      if(!node.depth || !node.children) {
-        return
+      if (!node.depth || !node.children) {
+        return;
       }
-      if(node.depth === 1) {
-        debugger
+      if (node.depth === 1) {
         title = (node.children[0] as ChildNode).value;
       }
       // h2 ~ h4
-      if(node.depth > 1 && node.depth < 5) {
+      if (node.depth > 1 && node.depth < 5) {
         const originText = (node.children as ChildNode[])
-        .map(child => {
-          switch(child.type){
-            // link节点无value 需要从children中拿
-            case 'link':
-              return child.children?.map(c => c.value).join('') || '';
-            default:
-              return child.value
-          }
-        })
-        .join('')
+          .map((child) => {
+            switch (child.type) {
+              // link节点无value 需要从children中拿
+              case 'link':
+                return child.children?.map((c) => c.value).join('') || '';
+              default:
+                return child.value;
+            }
+          })
+          .join('');
         // 对标题文本规范化
-        const id = slugger.slug(originText)
+        const id = slugger.slug(originText);
         toc.push({
           id,
           text: originText,
           depth: node.depth
-        })
+        });
       }
-    })
+    });
 
     const insertCode = `export const toc = ${JSON.stringify(toc, null, 2)};`;
     // 相关文档 https://github.com/syntax-tree/mdast-util-mdxjs-esm
@@ -69,23 +67,23 @@ export const remarkPluginToc:Plugin<[], Root> = () => {
           sourceType: 'module'
         }) as unknown as Program
       }
-    } as MdxjsEsm)
+    } as MdxjsEsm);
 
     if (title) {
-       const insertedTitle = `export const title = '${title}';`;
-       tree.children.push({
-         type: 'mdxjsEsm',
-         value: insertedTitle,
-         data: {
-           estree: parse(insertedTitle, {
-             ecmaVersion: 2020,
-             sourceType: 'module'
-           }) as unknown as Program
-         }
-       } as MdxjsEsm);
-     }
-  }
-}
+      const insertedTitle = `export const title = '${title}';`;
+      tree.children.push({
+        type: 'mdxjsEsm',
+        value: insertedTitle,
+        data: {
+          estree: parse(insertedTitle, {
+            ecmaVersion: 2020,
+            sourceType: 'module'
+          }) as unknown as Program
+        }
+      } as MdxjsEsm);
+    }
+  };
+};
 
 // node.children 是一个数组，包含几种情况:
 // 1. 文本节点，如 '## title'
