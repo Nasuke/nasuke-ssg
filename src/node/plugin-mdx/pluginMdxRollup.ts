@@ -7,6 +7,7 @@ import rehypePluginSlug from 'rehype-slug';
 import remarkPluginMDXFrontMatter from 'remark-mdx-frontmatter';
 import remarkPluginFrontmatter from 'remark-frontmatter';
 import remarkPluginMermaid from 'mdx-mermaid';
+import remarkMermaid from 'remark-mermaidjs';
 import { rehypePluginShiki } from './rehypePlugins/shiki';
 import shiki from 'shiki';
 import { remarkPluginToc } from './remarkPlugins/toc';
@@ -18,6 +19,7 @@ export async function pluginMdxRollup(): Promise<Plugin> {
       remarkPluginGFM,
       remarkPluginFrontmatter,
       [remarkPluginMDXFrontMatter, { name: 'frontmatter' }],
+      remarkMermaid as any,
       [remarkPluginMermaid, { output: 'svg' }],
       remarkPluginToc
     ],

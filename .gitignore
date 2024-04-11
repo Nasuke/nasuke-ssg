@@ -15,3 +15,5 @@ dist
 build
 
 vendors
+
+pnpm-lock.yaml
