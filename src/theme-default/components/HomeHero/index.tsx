@@ -3,42 +3,71 @@ import styles from './index.module.scss';
 import { Button } from '../Button/index';
 export function HomeHero(props: { hero: Hero }) {
   const { hero } = props;
+  const hasImage = hero.image !== undefined;
   return (
-    <div m="auto" p="t-20 x-16 b-16">
-      <div flex="~" className="max-w-1152px" m="auto">
-        <div text="left" flex="~ col" className="max-w-592px">
-          <h1 font="bold" text="6xl" className="max-w-576px">
+    <div
+      m="auto"
+      p="t-12 x-6 b-12 sm:t-0 sm:x-8 sm:x-16 md:t-20 md:x-16 md:b-16"
+    >
+      <div className="max-w-1152px" m="auto" flex="~ col md:row">
+        <div
+          m="auto md:0"
+          order="2 md:1"
+          text="center md:left"
+          flex="~ col lt-sm:c"
+          className="max-w-592px"
+        >
+          <h1
+            font="bold"
+            text="3xl sm:5xl md:6xl"
+            m="auto md:0"
+            className="max-w-392px sm:max-w-576px"
+          >
             <span className={styles.clip}>{hero.name}</span>
           </h1>
-          <p text="6xl" font="bold" className="max-w-576px">
+          <p
+            m="auto md:0"
+            text="3xl sm:5xl md:6xl"
+            font="bold"
+            className="max-w-392px sm:max-w-576px"
+          >
             {hero.text}
           </p>
           <p
             p="t-3"
-            text="2xl text-2"
+            m="auto md:0"
+            text="sm sm:xl md:2xl text-2"
             font="medium"
-            className="whitespace-pre-wrap max-w-576px"
+            className="whitespace-pre-wrap max-w-392px sm:max-w-576px"
           >
             {hero.tagline}
           </p>
-          <div flex="~ wrap" justify="start" p="t-8">
+          <div flex="~ wrap" justify="center md:start" m="-1.5" p="t-8">
             {hero.actions.map((action) => (
-              <div key={action.link} p="1">
+              <div p="1" flex="shrink-0" key={action.link}>
                 <Button
                   type="a"
                   text={action.text}
                   href={action.link}
                   theme={action.theme}
-                />
+                ></Button>
               </div>
             ))}
           </div>
         </div>
-        {hero.image && (
-          <div w="max-96" h="max-96" flex="center" m="auto">
-            <img src={hero.image.src} alt={hero.image.alt} />
+
+        {hasImage ? (
+          <div
+            w="sm:max-96"
+            h="sm:max-96"
+            flex="md:center"
+            m="auto"
+            order="1 md:2"
+            display="flex sm:flex md:none lg:flex"
+          >
+            <img src={hero.image?.src} alt={hero.image?.alt} />
           </div>
-        )}
+        ) : null}
       </div>
     </div>
   );

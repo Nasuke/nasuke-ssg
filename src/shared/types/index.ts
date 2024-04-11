@@ -1,7 +1,6 @@
 import { UserConfig as ViteConfiguration } from 'vite';
 import { ComponentType } from 'react';
 
-
 export type NavItemWithLink = {
   text: string;
   link: string;
@@ -39,9 +38,9 @@ export interface UserConfig {
 }
 
 export interface SiteConfig {
-  root: string,
-  configPath: string,
-  siteData: UserConfig
+  root: string;
+  configPath: string;
+  siteData: UserConfig;
 }
 
 export type PageType = 'home' | 'doc' | 'custom' | '404';
@@ -69,7 +68,7 @@ export interface PageData {
   frontmatter: FrontMatter;
   pageType: PageType;
   toc?: Header[];
-  title: string
+  title: string;
 }
 // 路由组件编译过后的模块内容
 export interface PageModule {
@@ -77,13 +76,14 @@ export interface PageModule {
   frontmatter?: FrontMatter;
   toc?: Header[];
   [key: string]: unknown;
-  title?: string
+  title?: string;
 }
 
 export interface Feature {
   icon: string;
   title: string;
   details: string;
+  length: number;
 }
 
 export interface Hero {
@@ -100,4 +100,3 @@ export interface Hero {
     theme: 'brand' | 'alt';
   }[];
 }
-
