@@ -311,7 +311,15 @@
  * -------------------------------------------------------------------------- */
 
 :root {
-  --nasuke-nav-height: 56px;
+  --nasuke-nav-height: var(--nasuke-nav-height-mobile);
+  --nasuke-nav-height-mobile: 56px;
+  --nasuke-nav-height-desktop: 60px;
+}
+
+@media (min-width: 960px) {
+  :root {
+    --nasuke-nav-height: var(--nasuke-nav-height-desktop);
+  }
 }
 
 /**
@@ -320,7 +328,6 @@
 
 :root {
   --nasuke-sidebar-width: 272px;
-  --nasuke-aside-width: 268px;
 }
 
 /**

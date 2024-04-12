@@ -1,0 +1,13 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Launch nasuke dev docs",
+      "program": "${workspaceFolder}/bin/nasuke",
+      "args": ["dev", "docs"],
+      "console": "integratedTerminal"
+    } 
+  ]
+}

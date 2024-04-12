@@ -68,6 +68,7 @@ export function PluginConfig(
       }
     },
     configureServer(server) {
+      //
       const publicDir = join(config.root, 'public');
       // 增加静态资源处理中间件
       if (fs.pathExistsSync(publicDir)) {
