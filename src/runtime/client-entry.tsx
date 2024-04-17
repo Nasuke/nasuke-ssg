@@ -17,6 +17,7 @@ async function renderInBrowser() {
   if (!containerEl) {
     throw new Error('#root element not found');
   }
+  // 全量注入
   if (import.meta.env.DEV) {
     // 初始化 PageData
     const pageData = await initPageData(location.pathname);
@@ -30,6 +31,7 @@ async function renderInBrowser() {
       </HelmetProvider>
     );
   } else {
+    // 只注入islands组件
     const islands = document.querySelectorAll('[__island]');
     if (islands.length === 0) {
       return;

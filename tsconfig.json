@@ -8,6 +8,7 @@
     "jsx": "react-jsx",
     "moduleResolution": "node",
     "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
     "paths": {
       "@runtime": ["./runtime/index.ts"],
       "shared/*": ["shared/*"]

@@ -11,6 +11,7 @@ import path, { dirname, join } from 'path';
 import fs from 'fs-extra';
 // import ora from 'ora';
 import { SiteConfig } from 'shared/types';
+
 import { createVitePlugins } from './vitePlugin';
 import { Route } from './plugin-routes';
 import { RenderResult } from '../runtime/server-entry';
@@ -100,7 +101,7 @@ window.ISLAND_PROPS = JSON.parse(
     build: {
       outDir: path.join(root, '.temp'),
       rollupOptions: {
-        // 入口只能是文件路径
+        // 让rollup来加载虚拟模块
         input: injectId,
         external: EXTERNALS
       }
@@ -162,11 +163,19 @@ export async function renderPages(
         islandToPathMap,
         islandProps = []
       } = await render(routePath, helmetContext.context);
+
+      // 判断是否含有islands组件
+      const hasIslands = Object.keys(islandToPathMap).length > 0;
+
       const styleAssets = clientBundle.output.filter(
         (chunk) => chunk.type === 'asset' && chunk.fileName.endsWith('.css')
       );
-      const islandBundle = await buildIslands(root, islandToPathMap);
-      const islandsCode = (islandBundle as RollupOutput).output[0].code;
+      let islandsCode = '';
+      if (hasIslands) {
+        console.log('Rendering islands...');
+        const islandBundle = await buildIslands(root, islandToPathMap);
+        islandsCode = (islandBundle as RollupOutput).output[0].code;
+      }
       const { helmet } = helmetContext.context;
       const normalizeVendorFilename = (fileName: string) =>
         fileName.replace(/\//g, '_') + '.js';
