@@ -8,6 +8,7 @@ export const data = {
 const originJsx = jsxRuntime.jsx;
 const originJsxs = jsxRuntime.jsxs;
 
+// 在renderToString中，会调用jsxRuntime.jsx，所以这里需要重写jsxRuntime.jsx
 const internalJsx = (jsx, type, props, ...args) => {
   if (props && props.__island) {
     data.islandProps.push(props);

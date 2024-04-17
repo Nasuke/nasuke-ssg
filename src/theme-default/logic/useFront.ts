@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
-import { Header } from '../../shared/types/index';
+import { FrontMatter } from '../../shared/types/index';
 
-export function useHeaders(initHeaders: Header[]) {
-  const [headers, setHeaders] = useState(initHeaders);
+export function useFront(initFront: FrontMatter) {
+  const [front, setFront] = useState(initFront);
 
   useEffect(() => {
     if (import.meta.env.DEV) {
@@ -13,12 +13,12 @@ export function useHeaders(initHeaders: Header[]) {
           // 拉取最新模块内容 带上时间戳为了防止缓存
           import(/* @vite-ignore */ `${filePath}?import&t=${Date.now()}`).then(
             (module) => {
-              setHeaders(module.toc);
+              setFront(module.frontmatter);
             }
           );
         }
       );
     }
   });
-  return headers;
+  return front;
 }

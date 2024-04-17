@@ -72,7 +72,7 @@ async function buildIslands(
   islandPathToMap: Record<string, string>
 ) {
   // { Aside: 'xxx' }
-  // 内容
+  // => 对应拼接内容
   // import { Aside } from 'xxx'
   // window.ISLANDS = { Aside }
   // window.ISLAND_PROPS = JSON.parse(
@@ -90,6 +90,7 @@ window.ISLAND_PROPS = JSON.parse(
   document.getElementById('island-props').textContent
 );
   `;
+  // 虚拟模块对应id
   const injectId = 'island:inject';
   return viteBuild({
     mode: 'production',
@@ -99,6 +100,7 @@ window.ISLAND_PROPS = JSON.parse(
     build: {
       outDir: path.join(root, '.temp'),
       rollupOptions: {
+        // 入口只能是文件路径
         input: injectId,
         external: EXTERNALS
       }

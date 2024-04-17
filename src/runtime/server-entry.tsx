@@ -11,10 +11,15 @@ export interface RenderResult {
 }
 // react-helmet
 // For ssr component render
-export async function render(pagePath: string, helmetContext: object) {
+export async function render(
+  pagePath: string,
+  helmetContext: object
+): Promise<RenderResult> {
   // 初始化页面数据
   const pageData = await initPageData(pagePath);
+  // 获取islands数据
   const { clearIslandData, data } = await import('./jsx-runtime');
+  // 清洗
   clearIslandData();
   const appHtml = renderToString(
     <HelmetProvider context={helmetContext}>
