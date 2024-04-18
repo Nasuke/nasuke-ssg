@@ -1,9 +1,8 @@
 import path from 'path';
 import fse from 'fs-extra';
-import * as execa from 'execa'; // 用于执行命令pnpm
+import * as execa from 'execa';
 
 const exampleDir = path.resolve(__dirname, '../e2e/playground/basic');
-
 const defaultExecaOpts = {
   cwd: exampleDir,
   stdout: process.stdout,
@@ -16,11 +15,10 @@ async function prepareE2E() {
   if (!fse.existsSync(path.resolve(__dirname, '../dist'))) {
     // exec build command
     execa.commandSync('pnpm build', {
-      // root 
       cwd: path.resolve(__dirname, '../')
     });
   }
-  // 安装浏览器包
+
   execa.commandSync('npx playwright install', {
     cwd: path.join(__dirname, '../'),
     stdout: process.stdout,

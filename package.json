@@ -22,7 +22,11 @@
   "bin": {
     "nasuke": "bin/nasuke.js"
   },
-  "keywords": ["vite", "ssg", "mdx"],
+  "keywords": [
+    "vite",
+    "ssg",
+    "mdx"
+  ],
   "author": "nasuke",
   "license": "MIT",
   "lint-staged": {

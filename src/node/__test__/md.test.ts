@@ -2,33 +2,23 @@ import { unified } from 'unified';
 import { describe, test, expect } from 'vitest';
 import remarkParse from 'remark-parse';
 import remarkRehype from 'remark-rehype';
-import remarkMdx from 'remark-mdx'
-import { remarkPluginToc } from '../plugin-mdx/remarkPlugins/toc'
 import rehypeStringify from 'rehype-stringify';
-import remarkStringfy from 'remark-stringify'
 import { rehypePluginPreWrapper } from '../plugin-mdx/rehypePlugins/preWrapper';
-import { rehypePluginShiki } from '../plugin-mdx/rehypePlugins/shiki';
+import { rehypePluginShiki } from '../../node/plugin-mdx/rehypePlugins/shiki';
 import shiki from 'shiki';
+import remarkMdx from 'remark-mdx';
+import { remarkPluginToc } from '../plugin-mdx/remarkPlugins/toc';
+import remarkStringify from 'remark-stringify';
 
 describe('Markdown compile cases', async () => {
-  // 初始化 processor
   const processor = unified()
     .use(remarkParse)
     .use(remarkRehype)
-    .use(rehypeStringify)
     .use(rehypePluginPreWrapper)
     .use(rehypePluginShiki, {
-      highlighter: await shiki.getHighlighter({
-        theme: 'nord'
-      })
+      highlighter: await shiki.getHighlighter({ theme: 'nord' })
     })
-
-  const remarkProcessor = unified()
-  .use(remarkParse)
-  .use(remarkMdx)
-  .use(remarkPluginToc)
-  .use(remarkStringfy)
-
+    .use(rehypeStringify);
 
   test('Compile title', async () => {
     const mdContent = '# 123';
@@ -39,19 +29,12 @@ describe('Markdown compile cases', async () => {
   test('Compile code', async () => {
     const mdContent = 'I am using `Island.js`';
     const result = processor.processSync(mdContent);
-    expect(result.value).toMatchInlineSnapshot('"<p>I am using <code>Island.js</code></p>"');
+    expect(result.value).toMatchInlineSnapshot(
+      '"<p>I am using <code>Island.js</code></p>"'
+    );
   });
 
-  // test('Compile code Block', async () => {
-  //   const mdContent = '```js\nconsole.log(123);\n```';
-  //   const result = processor.processSync(mdContent);
-  //   expect(result.value).toMatchInlineSnapshot(`
-  //     "<pre><code class=\\"language-js\\">console.log(123);
-  //     </code></pre>"
-  //   `);
-  // });
-
-  test('Compile code Block with Plugin', async () => {
+  test('Compile code block', async () => {
     const mdContent = '```js\nconsole.log(123);\n```';
     const result = processor.processSync(mdContent);
     expect(result.value).toMatchInlineSnapshot(`
@@ -60,7 +43,7 @@ describe('Markdown compile cases', async () => {
     `);
   });
 
-  test('Compile Toc', async () => {
+  test('Compile TOC', async () => {
     const mdContent = `# h1
 
 ## h2 \`code\`
@@ -71,9 +54,15 @@ describe('Markdown compile cases', async () => {
 
 ##### h5
 `;
-    const result = remarkProcessor.processSync(mdContent)
-    const replaceRes = result.value.toString().replace(mdContent, '')
-    expect(replaceRes).toMatchInlineSnapshot(`
+    const remarkProcessor = unified()
+      .use(remarkParse)
+      .use(remarkMdx)
+      .use(remarkPluginToc)
+      .use(remarkStringify);
+
+    const result = remarkProcessor.processSync(mdContent);
+    expect(result.value.toString().replace(mdContent, ''))
+      .toMatchInlineSnapshot(`
       "
       export const toc = [
         {
@@ -92,8 +81,9 @@ describe('Markdown compile cases', async () => {
           \\"depth\\": 4
         }
       ];
+
+      export const title = 'h1';
       "
     `);
   });
-
 });
