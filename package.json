@@ -1,6 +1,6 @@
 {
   "name": "nasuke-dev",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "This is a Vite SSG framework based on islands arch",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
