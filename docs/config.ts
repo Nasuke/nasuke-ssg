@@ -33,6 +33,19 @@ export default defineConfig({
             link: '/guide/d'
            }
          ]
+        },
+        {
+          text: '架构',
+          items: [
+            {
+              text: '热更新',
+              link: '/guide/a'
+            },
+            {
+              text: '解析器',
+              link: '/guide/b'
+            },
+         ]
         }
       ]
     }

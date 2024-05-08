@@ -44,7 +44,7 @@ export function Nav() {
 
           {/* 白天/夜间模式切换 */}
           <div before="menu-item-before" flex="~">
-            <SwitchAppearance />
+            <SwitchAppearance __island />
           </div>
 
           {/* 相关链接 */}

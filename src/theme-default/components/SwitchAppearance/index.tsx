@@ -1,6 +1,8 @@
 import styles from "./index.module.scss";
 // 逻辑部分待补充
 import { toggle } from "../../logic/toggleAppearance";
+import { ComponentPropsWithIsland } from "shared/types";
+
 
 interface SwitchProps {
   onClick?: () => void;
@@ -25,7 +27,7 @@ export function Switch(props: SwitchProps) {
   );
 }
 
-export function SwitchAppearance() {
+export function SwitchAppearance(props: ComponentPropsWithIsland) {
   return (
     <Switch onClick={toggle}>
       <div className={styles.sun}>
