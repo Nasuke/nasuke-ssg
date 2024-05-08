@@ -108,6 +108,7 @@
     "cac": "^6.7.14",
     "compress": "^0.99.0",
     "compression": "1.7.4",
+    "copy-to-clipboard": "3.3.2",
     "esbuild": "^0.17.8",
     "fast-glob": "^3.2.12",
     "fs-extra": "^10.1.0",

@@ -4,6 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { DataContext } from './hooks';
 import { ComponentType } from 'react';
 import { HelmetProvider } from 'react-helmet-async';
+import { setup } from '../theme-default';
 
 declare global {
   interface Window {
@@ -45,4 +46,9 @@ async function renderInBrowser() {
   }
 }
 
-renderInBrowser();
+renderInBrowser().then(() => {
+  // Binding the event after the first render
+  setTimeout(() => {
+    setup();
+  });
+});
